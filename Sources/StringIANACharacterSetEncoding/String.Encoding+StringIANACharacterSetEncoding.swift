@@ -2,44 +2,58 @@ import Foundation
 import CoreFoundation
 
 fileprivate extension String {
-    var cf: CFString {
+    // CFString version of the current string
+    var cfString: CFString {
         let chars = Array(self.utf16)
         let cfStr = CFStringCreateWithCharacters(nil, chars, self.utf16.count)
         let str = CFStringCreateCopy(nil, cfStr)!
         return str
     }
-    
-    var mcf: CFMutableString {
-        let chars = Array(self.utf16)
-        let cfStr = CFStringCreateWithCharacters(nil, chars, self.utf16.count)
-        let str = CFStringCreateMutableCopy(nil, 0, cfStr)!
-        return str
+}
+
+fileprivate extension NSString {
+    // String version of the current NSString
+    var string: String {
+        return self.appending("") // Cheating way to support on all platforms
     }
+}
+
+fileprivate extension CFString {
+    // NSString version of the current CFString
+    var nsString: NSString { return unsafeBitCast(self, to: NSString.self) }
+    
+    // String version of the current CFString
+    var string: String { return self.nsString.string }
 }
 
 public extension String.Encoding {
     
-    // The IANA Character Set name for this encoding
-   public var charSetName: String {
+    // The IANA Character Set name for this encoding if one is available
+    public var IANACharSetName: String? {
         guard self.rawValue != 1 else { return "ascii" } //Standardize ASCII
-    
-        let se = CFStringConvertNSStringEncodingToEncoding(self.rawValue)
-        let cfe = CFStringConvertEncodingToIANACharSetName(se)
-        return String(describing: cfe)
         
-    }
-    // The IANA Character Set name for this encoding with dashes removed
-    public var noDashCharSetName: String {
-        return self.charSetName.replacingOccurrences(of: "-", with: "")
+        
+        let se = CFStringConvertNSStringEncodingToEncoding(self.rawValue)
+        let cfe =  CFStringConvertEncodingToIANACharSetName(se)
+        //Convert CFString to NSString to String
+        return cfe?.string
     }
     
-    // Create String.Encoding based in IANA Character Set
-    public init?(charSetName name: String) {
+    // The IANA Character Set name for this encoding with dashes removed
+    public var noDashIANACharSetName: String? {
+        return self.IANACharSetName?.replacingOccurrences(of: "-", with: "")
+    }
+    
+    // Create String.Encoding based in IANA Character Set or returns nil if name does not match an encoding
+    public init?(IANACharSetName name: String) {
+        
         // https://stackoverflow.com/questions/44730379/how-can-i-convert-a-string-such-as-iso-8859-1-to-its-string-encoding-counte
-        let cfe = CFStringConvertIANACharSetNameToEncoding(name.cf)
+        
+        let cfe = CFStringConvertIANACharSetNameToEncoding(name.cfString)
         if cfe == kCFStringEncodingInvalidId { return nil }
         let se = CFStringConvertEncodingToNSStringEncoding(cfe)
         
         self.init(rawValue: se)
+        
     }
 }
