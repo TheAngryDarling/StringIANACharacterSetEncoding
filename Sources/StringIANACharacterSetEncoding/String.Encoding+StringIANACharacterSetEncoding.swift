@@ -26,7 +26,7 @@ fileprivate extension CFString {
     var string: String { return self.nsString.string }
 }
 
-public extension String.Encoding {
+extension String.Encoding {
     
     // The IANA Character Set name for this encoding if one is available
     public var IANACharSetName: String? {
