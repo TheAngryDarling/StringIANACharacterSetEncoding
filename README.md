@@ -12,7 +12,7 @@ This package uses the CFStringConvertIANACharSetNameToEncoding and CFStringConve
 Swift version 4.0 or greater
 
 ## Usage
-```
+```swift
 let ianaEncodingName: String = "UTF8"
 guard let encoding = String(IANACharSetName: ianaEncodingName) else { 
     throw Error.InvalidEncoding(ianaEncodingName)
@@ -29,4 +29,4 @@ This project is licensed under Apache License v2.0 - see the [LICENSE.md](LICENS
 
 ## Acknowledgments
 Stack Overflow resposne from [rmaddy](https://stackoverflow.com/questions/44730379/how-can-i-convert-a-string-such-as-iso-8859-1-to-its-string-encoding-counte)
-Patch for swift retain on swift versions 4.0, 4.1 provided on Swift Bugs [Knock YOCKOW ](https://bugs.swift.org/browse/SR-5986)
+Patch for swift retain on swift versions 4.0, 4.1 provided on Swift Bugs by [Knock YOCKOW ](https://bugs.swift.org/browse/SR-5986)
