@@ -1,5 +1,5 @@
 # String IANA Character Set Encoding
-![swift >= 4.0](https://img.shields.io/badge/swift-%3E%3D4.0-brightgreen.svg)
+![Swift](https://img.shields.io/badge/Swift->=4.0-green.svg?style=flat)
 ![macOS](https://img.shields.io/badge/os-macOS-green.svg?style=flat)
 ![Linux](https://img.shields.io/badge/os-linux-green.svg?style=flat)
 ![Apache 2](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat)
@@ -7,9 +7,6 @@
 Adds the ability of taking an IANA encoding name and converting it into a String.Encoding object.
 
 This package uses the CFStringConvertIANACharSetNameToEncoding and CFStringConvertEncodingToNSStringEncoding methods.
-
-## Prerequisites
-Swift version 4.0 or greater
 
 ## Usage
 ```swift
