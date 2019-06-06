@@ -2,7 +2,7 @@ import Foundation
 import CoreFoundation
 
 fileprivate extension String {
-    // CFString version of the current string
+    /// CFString version of the current string
     var cfString: CFString {
         let chars = Array(self.utf16)
         let cfStr = CFStringCreateWithCharacters(nil, chars, self.utf16.count)
@@ -12,23 +12,23 @@ fileprivate extension String {
 }
 
 fileprivate extension NSString {
-    // String version of the current NSString
+    /// String version of the current NSString
     var string: String {
         return self.appending("") // Cheating way to support on all platforms
     }
 }
 
 fileprivate extension CFString {
-    // NSString version of the current CFString
+    /// NSString version of the current CFString
     var nsString: NSString { return unsafeBitCast(self, to: NSString.self) }
     
-    // String version of the current CFString
+    /// String version of the current CFString
     var string: String { return self.nsString.string }
 }
 
 extension String.Encoding {
     
-    // The IANA Character Set name for this encoding if one is available
+    /// The IANA Character Set name for this encoding if one is available
     public var IANACharSetName: String? {
         guard self.rawValue != 1 else { return "ascii" } //Standardize ASCII
         
@@ -39,12 +39,14 @@ extension String.Encoding {
         return cfe?.string
     }
     
-    // The IANA Character Set name for this encoding with dashes removed
+    /// The IANA Character Set name for this encoding with dashes removed
     public var noDashIANACharSetName: String? {
         return self.IANACharSetName?.replacingOccurrences(of: "-", with: "")
     }
     
-    // Create String.Encoding based in IANA Character Set or returns nil if name does not match an encoding
+    /// Create String.Encoding based in IANA Character Set or returns nil if name does not match an encoding
+    ///
+    /// - Parameter name: IANA Character Set Name 
     public init?(IANACharSetName name: String) {
         
         // https://stackoverflow.com/questions/44730379/how-can-i-convert-a-string-such-as-iso-8859-1-to-its-string-encoding-counte
