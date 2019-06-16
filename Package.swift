@@ -3,6 +3,20 @@
 
 import PackageDescription
 
+var targets: [Target] = []
+
+#if !swift(>=5.0)
+//Only setup SR_5986 patch when we are not on in the objective C runtime
+targets.append(.target(name:"SR_5986", dependencies:[]))
+targets.append(.target(name: "StringIANACharacterSetEncoding", dependencies: ["SR_5986"]))
+#else
+targets.append(.target(name: "StringIANACharacterSetEncoding", dependencies: []))
+#endif
+
+targets.append(.testTarget(name: "StringIANACharacterSetEncodingTests",
+                           dependencies: ["StringIANACharacterSetEncoding"]))
+
+
 let package = Package(
     name: "StringIANACharacterSetEncoding",
     products: [
@@ -10,19 +24,10 @@ let package = Package(
         .library(
             name: "StringIANACharacterSetEncoding",
             targets: ["StringIANACharacterSetEncoding"]),
-    ],
+        ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
-    targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
-        .target(
-            name: "StringIANACharacterSetEncoding",
-            dependencies: []),
-        .testTarget(
-            name: "StringIANACharacterSetEncodingTests",
-            dependencies: ["StringIANACharacterSetEncoding"]),
-    ]
+    targets: targets
 )
